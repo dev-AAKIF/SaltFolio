@@ -4,7 +4,7 @@ const BaseApi = createApi({
     reducerPath: "baseApi",
  baseQuery: fetchBaseQuery({
         // baseUrl: "http://localhost:7000",
-        baseUrl: "https://selfolio-server.onrender.com",
+        baseUrl: "https://saltfolio-backend.onrender.com",
         credentials: "include",
         prepareHeaders: (headers, { getState }) => {
             headers.set("Accept", "application/json");
