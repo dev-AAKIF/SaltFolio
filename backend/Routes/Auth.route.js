@@ -5,9 +5,9 @@
 // import upload from '../MiddleWare/multer.middleware.js'
 
 import { Router } from "express";
-import Controller from "../Controllers/Auth.Controller";
-import authMiddleware from "../MiddleWare/auth.middleware"; 
-import upload from "../MiddleWare/multer.middleware";
+import Controller from "../Controllers/Auth.Controller.js";
+import authMiddleware from "../MiddleWare/auth.middleware.js"; 
+import upload from "../MiddleWare/multer.middleware.js";
 
 
 const {RegisterContoller, LoginController,userInfoController,LogoutController } = Controller;
