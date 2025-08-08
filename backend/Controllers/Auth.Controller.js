@@ -1,16 +1,17 @@
-import asyncHandler  from '../Utils/AsyncHandler.js'
-import ApiError from '../Utils/ApiError.js'
-import ApiSuccess from '../Utils/ApiSuccess.js'
-import User from '../Models/User.Model.js'
+import asyncHandler from "../Utils/AsyncHandler.js";
+import ApiError from "../Utils/ApiError.js";
+import ApiSuccess from "../Utils/ApiSuccess.js";
+import User from "../Models/User.Model.js";
 import fileUpload from "../Utils/FileUpload.js";
-import dayjs from 'dayjs';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
-import bcrypt from "bcrypt";
+import dayjs from "dayjs";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore.js";
+import bcrypt from 'bcrypt'
 
 dayjs.extend(isSameOrBefore);
 
-const RegisterController = asyncHandler(async (req, res) => {
-  const { email, password, confirmPassword, firstName, lastName, phoneNumber, dateOfBirth } = req.body;
+
+const RegisterContoller = asyncHandler(async (req, res) => {
+  const { email, password,confirmPassword, firstName, lastName, phoneNumber, dateOfBirth } = req.body;
 
   if (!email || !password || !confirmPassword || !firstName || !lastName || !phoneNumber || !dateOfBirth) {
     throw new ApiError(400, "All fields are required");
@@ -25,15 +26,14 @@ if (!passwordRegex.test(password)) {
   );
 }
 
-if (confirmPassword !== password) {
-   throw new ApiError(
+if(confirmPassword !== password) {
+  throw new ApiError(
     400,
-    "Confirm Password is not matching with the password"
-  );
+    "Confirm Paswword is not matching password"
+  )
 }
 
-
-  // Check if DOB makes the user 18+
+  
   const dob = dayjs(dateOfBirth);
   const age = dayjs().diff(dob, 'year');
   if (age < 18) {
@@ -93,6 +93,7 @@ const LoginController = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User doesn't exist");
   }
 
+  
   const isPasswordValid = await bcrypt.compare(password, existedUser.password);
   if (!isPasswordValid) {
     throw new ApiError(401, "Invalid password");
@@ -103,8 +104,8 @@ const LoginController = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
-    sameSite: "None", // For cross-origin cookies (e.g., frontend on localhost:3000)
-    maxAge: 7 * 24 * 60 * 60 * 1000 // optional: 7 days expiry
+    sameSite: "None",
+    maxAge: 7 * 24 * 60 * 60 * 1000, 
   };
 
   const loggedInUser = await User.findById(existedUser.id).select("-password");
@@ -124,6 +125,17 @@ const LoginController = asyncHandler(async (req, res) => {
     );
 });
 
+const LogoutController = asyncHandler(async (req, res) => {
+  res.clearCookie("accesToken", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  });
+
+  return res
+    .status(200)
+    .json(new ApiSuccess(200, null, "User logged out successfully"));
+});
 
 const userInfoController = asyncHandler(async (req, res) => {
   const { id } = req.user;
@@ -145,27 +157,24 @@ const userInfoController = asyncHandler(async (req, res) => {
         email: findUser.email,
         firstName: findUser.firstName,
         lastName: findUser.lastName,
-        profilePhoto: findUser.profilePhoto,
+        profilePhoto: findUser.profilePhoto, 
         phoneNumber: findUser.phoneNumber,
-        dateOfBirth: findUser.dateOfBirth
+        dateOfBirth: findUser.dateOfBirth 
       },
       "User found successfully"
     )
   );
 });
 
-const LogoutController = asyncHandler(async (req, res) => {
-  res.clearCookie("accesToken", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "None"
-  });
 
-  return res
-    .status(200)
-    .json(
-      new ApiSuccess(200, null, "User logged out successfully")
-    );
-});
 
-export default { LoginController, RegisterController, userInfoController, LogoutController};
+
+
+
+export default {
+  RegisterContoller,
+  LoginController,
+  userInfoController,
+  LogoutController
+  
+};

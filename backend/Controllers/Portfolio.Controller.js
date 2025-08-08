@@ -38,3 +38,5 @@ export const getPortfolioData = asyncHandler(async (req, res) => {
     message: `Data fetched for ${tenure}`,
   });
 });
+
+
