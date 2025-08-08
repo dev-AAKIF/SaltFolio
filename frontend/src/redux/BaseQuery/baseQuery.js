@@ -3,8 +3,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const BaseApi = createApi({
     reducerPath: "baseApi",
  baseQuery: fetchBaseQuery({
-        // baseUrl: "http://localhost:7000",
-        baseUrl: "https://saltfolio-backend.onrender.com",
+        baseUrl: "http://localhost:7000",
+        // baseUrl: "https://saltfolio-backend.onrender.com",
         credentials: "include",
         prepareHeaders: (headers, { getState }) => {
             headers.set("Accept", "application/json");

@@ -1,5 +1,6 @@
 import { Router} from "express"
 import Controller from '../Controllers/Auth.Controller.js';
+// import authMiddleware from "../MiddleWare/auth.middleware.js";
 import authMiddleware from "../MiddleWare/auth.middleware.js";
 import upload from '../MiddleWare/multer.middleware.js'
 const {RegisterContoller, LoginController,userInfoController,LogoutController } = Controller;
